@@ -6,6 +6,11 @@ from helpers.sql import *
 
 # The URL of our api is http://127.0.0.1:5000/ or localhost:5000/
 # Decorators
+
+# Def "endpoint_create_user" es una función que gracias a la anotación de Flask (@app.route"/path") enruta una 
+# peticion HTTP a ese path "/user/create/<username>", esta funcion crea un usuario con el username que nos pasan
+# (en este caso se pasa por el propio path con <>)
+
 # To create a new user, we will insert the information as follows:
 @app.route("/user/create/<username>")  #where "<username>" will be the name of the user (i.e. alejandro)
 def endpoint_create_user(username):

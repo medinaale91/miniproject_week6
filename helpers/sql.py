@@ -24,8 +24,9 @@ chat_db = mysqlconn.connect(
 # we construct an insert statement (sql) and execute the statement together with the data 
 # (cursor.execute(sql, (username,))) for inserting it into the User table.
 # We then commit the change in the try-except block. We have to explicity call the commit() method in order to make
-# changes to the database. In case a new row is inserted succesfully, you can retrieve the last insert id of the 
-# Auto_Increment column by using the lastrowid property of the MySQLCursor object.
+# changes to the database. In case a new row is inserted succesfully, you can retrieve (recuperar) the last insert 
+# id of the Auto_Increment column by using the lastrowid property of the MySQLCursor object. Ese id lo guardamos 
+# como variable ya que es lo que devolverá la función.
 # After that, we close the cursor at the end of the create_user() function.
 # Finally, we call the create_user() function to insert a new row into the user table.
 def create_user(username):
@@ -41,14 +42,16 @@ def create_user(username):
         cursor.close()
     return user_id
 
+create_user("mara")
 
 #Funcion para crear el chat y meter todos los usuarios que le pasemos. Como el chat solo tiene una propiedad que es 
 # autoincrement, no necesitamos decirle ningun valor para crear un chat. Una vez creado el chat, y como la relacion 
-# entre usuario y chat es N:N, tenemos una tabla itnermedia llamada userchat cuya primary key es la tupla 
+# entre usuario y chat es N:N, tenemos una tabla intermedia llamada userchat cuya primary key es la tupla 
 # Chat_id,user_id, lo cual significa que un chat puede tener varios usuarios y un usuario puede estar en más de 
 # un chat. Las relaciones N:N en una base de datos relacional siempre se resuelven mediante este tipo de tabla 
 # intermedia (es lo que nos genera automaticamente el diagrama al relacionar las dos tablas (User y Chat) con 
-# relación N:N. Una vez creado el chat, tenemos que iterar sobre la lista de users_id que nos han pasado y crear 
+# relación N:N. 
+# Una vez creado el chat, tenemos que iterar sobre la lista de users_id que nos han pasado y crear 
 # la fila correspondiente en la tabla Userchat mencionada anteriormente. En caso de que alguno de los id no existiera,
 # la ejecucion de la sentencia sql lanzaria una excepción porque no es capaz de satisfacer las foreign key y PK.
 # De ahi que hagamos try except en este codigo.
@@ -67,6 +70,8 @@ def create_chat(list_user_id):
         cursor.close()
     return chat_id
 
+# create_chat([14, 15])
+
 # Esta funcion añade un usuario a un chat ya existente.
 def add_user_to_chat(chat_id, user_id): 
     try:
@@ -78,6 +83,8 @@ def add_user_to_chat(chat_id, user_id):
     finally:
         cursor.close()
     return chat_id
+
+add_user_to_chat(1, 5)
 
 # en python, las funciones privadas empiezan por __ (doble _)
 # esto quiere decir que solo este fichero (sql.py) puede llamar a esta función, si intentas llamarla desde otro
